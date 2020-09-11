@@ -1,0 +1,23 @@
+{
+  "name": "passioneight/pimcore-options-providers",
+  "type": "pimcore-bundle",
+  "license": "GPL-3.0",
+  "autoload": {
+    "psr-4": {
+      "Passioneight\\Bundle\\PimcoreOptionsProvidersBundle\\": "src/"
+    }
+  },
+
+  "require": {
+    "passioneight/php-utilities": "^1",
+    "passioneight/pimcore-utilities": "^1"
+  },
+
+  "extra": {
+    "pimcore": {
+      "bundles": [
+        "Passioneight\\Bundle\\PimcoreOptionsProvidersBundle\\PimcoreOptionsProvidersBundle"
+      ]
+    }
+  }
+}
