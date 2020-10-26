@@ -10,7 +10,7 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 class StoreProvider
 {
     /** @var ConstantOptionsProvider $constantOptionsProvider */
-    private $constantOptionsProvider;
+    protected $constantOptionsProvider;
 
     /**
      * In case no options-provider is in use.
@@ -40,7 +40,7 @@ class StoreProvider
      * @param array $optionsProviderOptions
      * @return array
      */
-    private function getStore(array $optionsProviderOptions)
+    protected function getStore(array $optionsProviderOptions)
     {
         $options = [];
         foreach ($optionsProviderOptions as $optionsProviderOption) {
