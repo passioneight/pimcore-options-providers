@@ -13,6 +13,7 @@ this bundle was created.
         - [Default Value](/documentation/20_usage.md#default-value)
         - [Options Provider Data](/documentation/20_usage.md#options-provider-data)
     - [StoreProvider](/documentation/20_usage.md#storeprovider)
+        - [IconStoreProvider](/documentation/20_usage.md#iconstoreprovider)
 - [Customization](/documentation/30_customization.md)
 
 # When should I use this bundle?

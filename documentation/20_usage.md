@@ -144,3 +144,38 @@ class ContentController extends FrontendController
 
 > The `StoreOptionsProvider` will display the options in the same way as the passed `OptionsProvider`. Thus, when using a
 > `TranslatableConstant`, the corresponding translation keys will be used.
+
+###### IconStoreProvider
+More often than not, it is necessary to provide a `pimcore_select` containing icons. To directly display the icons, HTML
+can be rendered as select-options. However, doing this manually for every `pimcore_select` is quite cumbersome. Thus,
+the `AbstractIconStoreProvider` was added.
+
+Create a service (e.g., `IconStoreProvider`) and extend from the `AbstractIconStoreProvider` class. Next, return the path
+to the `Twig`-template in the `getIconTemplate` method:
+
+```php
+<?php
+
+namespace AppBundle\Service\StoreProvider;
+
+use Passioneight\Bundle\PimcoreOptionsProvidersBundle\Service\Backend\StoreProvider\AbstractIconStoreProvider;
+
+class IconStoreProvider extends AbstractIconStoreProvider
+{
+    /**
+     * @inheritDoc
+     */
+    protected function getIconTemplate(): string
+    {
+        return ':Includes:icon.html.twig';
+    }
+}
+```
+
+Now, implement the template itself, similar to:
+
+```twig
+<span class="icon icon-{{ icon }}"></span>
+```
+
+Finally, create your store as mentioned before: `$this->view->store = $storeProvider->getStoreForConstant(Icon::class);`
