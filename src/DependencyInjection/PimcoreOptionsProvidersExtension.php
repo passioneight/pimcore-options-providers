@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 use Passioneight\Bundle\PimcoreOptionsProvidersBundle\Constant\Configuration as Config;
 
-class OptionsProvidersExtension extends ConfigurableExtension
+class PimcoreOptionsProvidersExtension extends ConfigurableExtension
 {
     /**
      * @inheritDoc
