@@ -6,7 +6,7 @@ use Passioneight\Bundle\PhpUtilitiesBundle\Constant\Constant;
 use Passioneight\Bundle\PimcoreOptionsProvidersBundle\Constant\OptionsProviderData;
 use Passioneight\Bundle\PhpUtilitiesBundle\Constant\Php;
 use Passioneight\Bundle\PimcoreUtilitiesBundle\Constant\TranslatableConstant;
-use Passioneight\Bundle\PhpUtilitiesBundle\Utility\NamespaceUtility;
+use Passioneight\Bundle\PhpUtilitiesBundle\Service\Utility\NamespaceUtility;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
