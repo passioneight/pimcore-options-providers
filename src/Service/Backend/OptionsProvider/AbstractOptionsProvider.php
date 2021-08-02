@@ -75,7 +75,7 @@ abstract class AbstractOptionsProvider implements SelectOptionsProviderInterface
     protected function getConfiguration(string $name)
     {
         $configuration = $this->configuration ?: [];
-        return @$configuration[$name];
+        return array_key_exists($name, $configuration) ? $configuration[$name] : null;
     }
 
     /**
