@@ -3,8 +3,10 @@
 namespace Passioneight\Bundle\PimcoreOptionsProvidersBundle\Service\Backend\OptionsProvider;
 
 use Passioneight\Bundle\PimcoreOptionsProvidersBundle\Constant\OptionsProviderData;
+use Pimcore\Cache\Runtime;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\ClassDefinition\DynamicOptionsProvider\SelectOptionsProviderInterface;
+use Pimcore\Tool;
 
 abstract class AbstractOptionsProvider implements SelectOptionsProviderInterface
 {
@@ -55,10 +57,17 @@ abstract class AbstractOptionsProvider implements SelectOptionsProviderInterface
      */
     protected function loadConfiguration($context, ?Data $fieldDefinition): array
     {
-        if (!isset($this->configuration)) {
+        $cacheKey = self::CACHE_KEY_PREFIX . md5($fieldDefinition ? $fieldDefinition->getOptionsProviderData() : serialize($context));
+        $cacheKey = Tool::getValidCacheKey($cacheKey);
+
+        try{
+            $this->configuration = Runtime::get($cacheKey);
+        } catch (\Exception $exception) {
             $optionsProviderData = $fieldDefinition ? $fieldDefinition->getOptionsProviderData() : $context;
             $optionsProviderData = is_string($optionsProviderData) ? json_decode($optionsProviderData, true) : $optionsProviderData;
             $this->configuration = $optionsProviderData ?: [];
+
+            Runtime::set($cacheKey, $this->configuration);
 
             if(json_last_error() !== JSON_ERROR_NONE) {
                 throw new \InvalidArgumentException("The options provider data is not valid. Reason: " . json_last_error_msg());
