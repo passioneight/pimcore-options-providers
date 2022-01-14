@@ -10,6 +10,8 @@ use Pimcore\Tool;
 
 abstract class AbstractOptionsProvider implements SelectOptionsProviderInterface
 {
+    const CACHE_KEY_PREFIX = "options-provider_";
+    
     /** @var array $configuration */
     protected $configuration;
 
