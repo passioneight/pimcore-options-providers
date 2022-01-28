@@ -36,7 +36,7 @@ abstract class AbstractOptionsProvider implements SelectOptionsProviderInterface
     {
         $configuration = $this->loadConfiguration($context, $fieldDefinition);
 
-        if ($default = $configuration[OptionsProviderData::DEFAULT_VALUE]) {
+        if ($default = $configuration[OptionsProviderData::DEFAULT_VALUE] ?? null) {
             return $default;
         }
 
