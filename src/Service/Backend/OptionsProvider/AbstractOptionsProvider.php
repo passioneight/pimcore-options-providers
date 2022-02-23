@@ -66,7 +66,7 @@ abstract class AbstractOptionsProvider implements SelectOptionsProviderInterface
             $this->configuration = Runtime::get($cacheKey);
         } catch (\Exception $exception) {
             $optionsProviderData = $fieldDefinition ? $fieldDefinition->getOptionsProviderData() : $context;
-            $optionsProviderData = is_string($optionsProviderData) ? json_decode($optionsProviderData, true) : $optionsProviderData;
+            $optionsProviderData = is_string($optionsProviderData) && !empty($optionsProviderData) ? json_decode($optionsProviderData, true) : $optionsProviderData;
             $this->configuration = $optionsProviderData ?: [];
 
             Runtime::set($cacheKey, $this->configuration);
