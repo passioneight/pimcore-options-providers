@@ -23,7 +23,7 @@ abstract class AbstractOptionsProvider implements SelectOptionsProviderInterface
     {
         $configuration = $this->loadConfiguration($context, $fieldDefinition);
 
-        $hasStaticOptions = $configuration[OptionsProviderData::STATIC_OPTIONS];
+        $hasStaticOptions = $configuration[OptionsProviderData::STATIC_OPTIONS] ?? null;
         $hasStaticOptions = is_bool($hasStaticOptions) ? $hasStaticOptions : true;
 
         return $hasStaticOptions;
