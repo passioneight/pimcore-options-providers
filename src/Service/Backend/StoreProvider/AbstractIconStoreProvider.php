@@ -40,8 +40,6 @@ abstract class AbstractIconStoreProvider extends StoreProvider
      */
     protected function renderIconTemplate(string $icon)
     {
-        p_r($this->getIconTemplate());
-        p_r($this->environment->render($this->getIconTemplate(), ['icon' => $icon]));
         return $this->environment->render($this->getIconTemplate(), ['icon' => $icon]);
     }
 
