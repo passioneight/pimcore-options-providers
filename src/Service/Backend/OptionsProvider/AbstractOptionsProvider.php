@@ -6,7 +6,6 @@ use Passioneight\Bundle\PimcoreOptionsProvidersBundle\Constant\OptionsProviderDa
 use Pimcore\Cache\Runtime;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\ClassDefinition\DynamicOptionsProvider\SelectOptionsProviderInterface;
-use Pimcore\Tool;
 
 abstract class AbstractOptionsProvider implements SelectOptionsProviderInterface
 {
