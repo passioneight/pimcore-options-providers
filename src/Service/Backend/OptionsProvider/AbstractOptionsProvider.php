@@ -60,7 +60,6 @@ abstract class AbstractOptionsProvider implements SelectOptionsProviderInterface
     protected function loadConfiguration($context, ?Data $fieldDefinition): array
     {
         $cacheKey = self::CACHE_KEY_PREFIX . md5($fieldDefinition ? $fieldDefinition->getOptionsProviderData() : serialize($context));
-        $cacheKey = Tool::getValidCacheKey($cacheKey);
 
         try{
             $this->configuration = Runtime::get($cacheKey);
