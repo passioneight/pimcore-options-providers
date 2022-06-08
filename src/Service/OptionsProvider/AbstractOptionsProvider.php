@@ -1,6 +1,6 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreOptionsProvidersBundle\Service\Backend\OptionsProvider;
+namespace Passioneight\Bundle\PimcoreOptionsProvidersBundle\Service\OptionsProvider;
 
 use Passioneight\Bundle\PimcoreOptionsProvidersBundle\Constant\OptionsProviderData;
 use Pimcore\Cache\Runtime;
@@ -10,9 +10,8 @@ use Pimcore\Model\DataObject\ClassDefinition\DynamicOptionsProvider\SelectOption
 abstract class AbstractOptionsProvider implements SelectOptionsProviderInterface
 {
     const CACHE_KEY_PREFIX = "options-provider_";
-    
-    /** @var array $configuration */
-    protected $configuration;
+
+    protected array $configuration;
 
     /**
      * @inheritDoc
@@ -23,9 +22,7 @@ abstract class AbstractOptionsProvider implements SelectOptionsProviderInterface
         $configuration = $this->loadConfiguration($context, $fieldDefinition);
 
         $hasStaticOptions = $configuration[OptionsProviderData::STATIC_OPTIONS] ?? null;
-        $hasStaticOptions = is_bool($hasStaticOptions) ? $hasStaticOptions : true;
-
-        return $hasStaticOptions;
+        return is_bool($hasStaticOptions) ? $hasStaticOptions : true;
     }
 
     /**
@@ -34,21 +31,16 @@ abstract class AbstractOptionsProvider implements SelectOptionsProviderInterface
     public function getDefaultValue($context, $fieldDefinition)
     {
         $configuration = $this->loadConfiguration($context, $fieldDefinition);
-
-        if ($default = $configuration[OptionsProviderData::DEFAULT_VALUE] ?? null) {
-            return $default;
-        }
-
-        return null;
+        return $configuration[OptionsProviderData::DEFAULT_VALUE] ?? null;
     }
 
     /**
      * @param array $context
      * @return string|null
      */
-    protected function getFieldName($context)
+    protected function getFieldName($context): ?string
     {
-        return $context[OptionsProviderData::FIELD_NAME];
+        return $context[OptionsProviderData::FIELD_NAME] ?? null;
     }
 
     /**
@@ -81,7 +73,7 @@ abstract class AbstractOptionsProvider implements SelectOptionsProviderInterface
      * @param string $name
      * @return string|null the value for the configuration with the given name if available, NULL otherwise.
      */
-    protected function getConfiguration(string $name)
+    protected function getConfiguration(string $name): ?string
     {
         $configuration = $this->configuration ?: [];
         return array_key_exists($name, $configuration) ? $configuration[$name] : null;
@@ -96,5 +88,5 @@ abstract class AbstractOptionsProvider implements SelectOptionsProviderInterface
      * @param Data|null $fieldDefinition
      * @return array
      */
-    abstract protected function prepareOptions(array $options, $context, ?Data $fieldDefinition);
+    abstract protected function prepareOptions(array $options, $context, ?Data $fieldDefinition): array;
 }

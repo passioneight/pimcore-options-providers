@@ -1,6 +1,6 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreOptionsProvidersBundle\Service\Backend\StoreProvider;
+namespace Passioneight\Bundle\PimcoreOptionsProvidersBundle\Service\StoreProvider;
 
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -9,8 +9,7 @@ use Twig\Error\SyntaxError;
 
 abstract class AbstractIconStoreProvider extends StoreProvider
 {
-    /** @var Environment $environment */
-    protected $environment;
+    protected Environment $environment;
 
     /**
      * @param array $optionsProviderOptions
@@ -19,7 +18,7 @@ abstract class AbstractIconStoreProvider extends StoreProvider
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    protected function getStore(array $optionsProviderOptions)
+    protected function getStore(array $optionsProviderOptions): array
     {
         $options = [];
         foreach ($optionsProviderOptions as $optionsProviderOption) {
@@ -34,13 +33,16 @@ abstract class AbstractIconStoreProvider extends StoreProvider
 
     /**
      * @param string $icon
+     * @return string
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    protected function renderIconTemplate(string $icon)
+    protected function renderIconTemplate(string $icon): string
     {
-        return $this->environment->render($this->getIconTemplate(), ['icon' => $icon]);
+        return $this->environment->render($this->getIconTemplate(), [
+            'icon' => $icon
+        ]);
     }
 
     /**
@@ -50,9 +52,8 @@ abstract class AbstractIconStoreProvider extends StoreProvider
 
     /**
      * @required
-     * @internal
-     *
      * @param Environment $environment
+     * @internal
      */
     public function setEnvironment(Environment $environment)
     {

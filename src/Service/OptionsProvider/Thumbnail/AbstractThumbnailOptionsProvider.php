@@ -1,14 +1,14 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreOptionsProvidersBundle\Service\Backend\OptionsProvider\Thumbnail;
+namespace Passioneight\Bundle\PimcoreOptionsProvidersBundle\Service\OptionsProvider\Thumbnail;
 
+use Passioneight\Bundle\PimcoreOptionsProvidersBundle\Service\OptionsProvider\AbstractOptionsProvider;
 use Passioneight\Bundle\PimcoreUtilitiesBundle\Constant\ThumbnailType;
-use Passioneight\Bundle\PimcoreOptionsProvidersBundle\Service\Backend\OptionsProvider\AbstractOptionsProvider;
 use Pimcore\Model\Asset\Image\Thumbnail\Config as ImageThumbnail;
 use Pimcore\Model\Asset\Video\Thumbnail\Config as VideoThumbnail;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
-abstract class ThumbnailOptionsProvider extends AbstractOptionsProvider
+abstract class AbstractThumbnailOptionsProvider extends AbstractOptionsProvider
 {
     /**
      * Neither $context nor $fieldDefinition are used here. Thus, no need to pass any values.
@@ -28,7 +28,7 @@ abstract class ThumbnailOptionsProvider extends AbstractOptionsProvider
     /**
      * @inheritDoc
      */
-    protected function prepareOptions(array $thumbnails, $context, $fieldDefinition)
+    protected function prepareOptions(array $thumbnails, $context, $fieldDefinition): array
     {
         $options = [];
 
@@ -47,27 +47,23 @@ abstract class ThumbnailOptionsProvider extends AbstractOptionsProvider
     /**
      * @param array|null $context
      * @param Data|null $fieldDefinition
-     * @return ImageThumbnail\Listing|ImageThumbnail\Listing
+     * @return array|ImageThumbnail\Listing|VideoThumbnail\Listing array is returned in case of invalid type
      */
-    private function loadThumbnails(?array $context, ?Data $fieldDefinition)
+    private function loadThumbnails(?array $context, ?Data $fieldDefinition): array|ImageThumbnail\Listing|VideoThumbnail\Listing
     {
         $this->loadConfiguration($context, $fieldDefinition);
 
-        $thumbnails = [];
-
-        if ($this->getThumbnailType() === ThumbnailType::IMAGE) {
-            $thumbnails = new ImageThumbnail\Listing();
-        } else if ($this->getThumbnailType() === ThumbnailType::VIDEO) {
-            $thumbnails = new ImageThumbnail\Listing();
-        }
-
-        return $thumbnails;
+        return match ($this->getThumbnailType()) {
+            ThumbnailType::IMAGE => new ImageThumbnail\Listing(),
+            ThumbnailType::VIDEO => new VideoThumbnail\Listing(),
+            default => []
+        };
     }
 
     /**
      * @return string @see{ThumbnailType}
      */
-    abstract protected function getThumbnailType();
+    abstract protected function getThumbnailType(): string;
 
     /**
      * @inheritDoc

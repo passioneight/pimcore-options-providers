@@ -2,7 +2,7 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
-        public: true
 
     Passioneight\Bundle\PimcoreOptionsProvidersBundle\Service\:
         resource: '../../Service'
+        public: true

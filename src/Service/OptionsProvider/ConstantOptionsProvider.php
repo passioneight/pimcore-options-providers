@@ -1,29 +1,23 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreOptionsProvidersBundle\Service\Backend\OptionsProvider;
+namespace Passioneight\Bundle\PimcoreOptionsProvidersBundle\Service\OptionsProvider;
 
 use Passioneight\Bundle\PhpUtilitiesBundle\Constant\Constant;
-use Passioneight\Bundle\PimcoreOptionsProvidersBundle\Constant\OptionsProviderData;
 use Passioneight\Bundle\PhpUtilitiesBundle\Constant\Php;
-use Passioneight\Bundle\PimcoreUtilitiesBundle\Constant\TranslatableConstant;
 use Passioneight\Bundle\PhpUtilitiesBundle\Service\Utility\NamespaceUtility;
+use Passioneight\Bundle\PimcoreOptionsProvidersBundle\Constant\OptionsProviderData;
+use Passioneight\Bundle\PimcoreUtilitiesBundle\Constant\TranslatableConstant;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ConstantOptionsProvider extends AbstractOptionsProvider
 {
-    const DEFAULT_CONSTANTS_NAMESPACE = "AppBundle" . Php::NAMESPACE_DELIMITER . "Constant";
-
-    /** @var TranslatorInterface $translator */
-    private $translator;
-
     /**
      * Convenience method; in case the options are needed programmatically.
      *
      * @param string $constantsClass fully qualified namespace
      * @return array
      */
-    public function getOptionsForConstant(string $constantsClass)
+    public function getOptionsForConstant(string $constantsClass): array
     {
         $context = [
             OptionsProviderData::CONSTANTS_CLASS => $constantsClass
@@ -49,22 +43,20 @@ class ConstantOptionsProvider extends AbstractOptionsProvider
 
     /**
      * @inheritDoc
+     *
+     * Note that we don't need to actually translate the option's label, because Pimcore translates all labels
+     * automatically anyway.
      */
-    protected function prepareOptions(array $options, $context, ?Data $fieldDefinition)
+    protected function prepareOptions(array $options, $context, ?Data $fieldDefinition): array
     {
         $class = $this->loadConstantsClass($context, $fieldDefinition);
         $isTranslatable = is_a($class, TranslatableConstant::class, true);
 
         foreach ($options as $key => $option) {
             $options[$key] = [
-                "key" => $option,
+                "key" => $isTranslatable ? $class::toTranslationKey($option) : $option,
                 "value" => $option,
             ];
-
-            if ($isTranslatable) {
-                $translationKey = $class::toTranslationKey($option);
-                $options[$key]["key"] = $this->translator->trans($translationKey);
-            }
         }
 
         return $options;
@@ -98,7 +90,7 @@ class ConstantOptionsProvider extends AbstractOptionsProvider
      * @param string $class
      * @return string the fully qualified class name.
      */
-    protected function getFQCN(string $class)
+    protected function getFQCN(string $class): string
     {
         $namespace = NamespaceUtility::getNamespaceForClass($class);
 
@@ -112,21 +104,10 @@ class ConstantOptionsProvider extends AbstractOptionsProvider
     }
 
     /**
-     * Only implemented for convenience, as this method allows overriding the default namespace for the constants class.
      * @return string
      */
-    protected function getDefaultConstantsNamespace()
+    public static function getDefaultConstantsNamespace(): string
     {
-        return self::DEFAULT_CONSTANTS_NAMESPACE;
-    }
-
-    /**
-     * @required
-     * @internal
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
+        return NamespaceUtility::join("App", "Constant");
     }
 }
