@@ -9,8 +9,7 @@
   },
 
   "require": {
-    "passioneight/php-utilities": "^1.0",
-    "passioneight/pimcore-utilities": "^1.0"
+    "passioneight/pimcore-utilities": "^2.0"
   },
 
   "extra": {
