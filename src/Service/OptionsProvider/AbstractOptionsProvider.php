@@ -61,7 +61,7 @@ abstract class AbstractOptionsProvider implements SelectOptionsProviderInterface
 
             Runtime::set($cacheKey, $this->configuration);
 
-            if(json_last_error() !== JSON_ERROR_NONE) {
+            if(\Pimcore::inAdmin() && json_last_error() !== JSON_ERROR_NONE) {
                 throw new \InvalidArgumentException("The options provider data is not valid. Reason: " . json_last_error_msg());
             }
         }
